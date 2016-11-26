@@ -1,0 +1,25 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Funthingy
+{
+    class Program
+    {
+        static void funct(int x)
+        { Console.WriteLine(x / 2);
+            Console.ReadLine();
+        }
+
+        static void Main(string[] args)
+        {
+
+            funct(88);
+            
+            funct(40);
+
+        }
+    }
+}
