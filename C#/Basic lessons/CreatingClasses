@@ -1,0 +1,63 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace UnderstandingAndCreatingClasses
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Car mynewcar = new Car();
+            mynewcar.make = "Honda";
+            mynewcar.model = "Accord";
+            mynewcar.year = 2001;
+            mynewcar.colour = "Gold";
+
+            Console.WriteLine("{0} - {1} - {2}",
+                mynewcar.make,
+                mynewcar.model,
+                mynewcar.year,
+                mynewcar.colour);
+            double marketValueOfCar = determineMarketValue(mynewcar);
+            Console.WriteLine("Car's Value: {0:C}", mynewcar.determineMarketValue());
+            Console.Read();
+
+        }
+        private static double determineMarketValue (Car car)
+        { double carValue = 100.0;
+            return carValue;
+        }   //Someday this will go online and look up the car's value 
+            //this will retrieve its value into the carValue variable 
+  
+
+    }
+    class Car
+    {
+        public string make { get; set; }
+        public string model { get; set; }
+        public int year { get; set; }
+        public string colour { get; set; }
+
+        public double determineMarketValue()
+        {
+            double carValue = 100.0;
+            if (this.year > 1990)
+                carValue = 10000.0;
+            else
+                carValue = 2000.0;
+
+            return carValue;
+        }
+
+
+
+
+    }
+
+
+
+
+}
