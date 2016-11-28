@@ -1,0 +1,58 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ObjectLifetime
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Car myCar = new Car();
+
+            //set properties 
+            Car myOtherCar = myCar;
+
+            myOtherCar = null;
+            myCar = null;
+            Car myThirdCar = new Car("Ford", "Escape", 2005, "White");
+            Car.MyMethod();
+            
+            
+            
+
+        }
+        class Car
+        {
+            public string make { get; set; }
+            public string model { get; set; }
+            public int year { get; set; }
+            public string colour { get; set; }
+            public double orignalPrice{ get; set; }
+
+            public Car()
+            {
+                this.make = "Honda";
+               
+            }
+            public Car(string Make, string Model, int Year, string color)
+            {
+                make = Make;
+                model = Model;
+                year = Year;
+                colour = color;
+            }
+            public static void MyMethod()
+            {
+                Console.WriteLine("WhatUpMehtodTho");
+                Console.ReadLine();
+            }
+         
+
+        }
+
+
+    }
+}
