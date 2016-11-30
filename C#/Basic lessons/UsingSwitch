@@ -1,0 +1,38 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace UsingSwitch
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Type in a Republican's name to get his true name:");
+            string userValue = Console.ReadLine();
+
+            switch(userValue.ToUpper())
+            { case "TRUMP":
+                    Console.WriteLine("GOD EMPEROR");
+                    break;
+                case "JEB!":
+                    Console.WriteLine("GUACBOWL MERCHANT");
+                    break;
+                case "TED":
+                    Console.WriteLine("ZODIAC KILLER");
+                    break;
+                case "JOHN":
+                    Console.WriteLine("HUGE BITES!");
+                    break;
+                default:
+                    Console.WriteLine("not a real candidate");
+                    break;
+                
+                    
+            }
+            Console.ReadLine();
+        }
+    }
+}
