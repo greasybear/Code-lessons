@@ -1,0 +1,52 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace UnderstandingEnumerations
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Candidates myValue;
+            Console.WriteLine("Type in Candidate name: ");
+            string userValue = Console.ReadLine();
+            if (Enum.TryParse<Candidates>(userValue, true, out myValue))
+            {
+                switch (myValue)
+                {
+                    case Candidates.Trump:
+                        Console.WriteLine("Emperor");
+                        break;
+                    case Candidates.Kasich:
+                        Console.WriteLine("hungryMan");
+                        break;
+                    case Candidates.Jeb:
+                        Console.WriteLine("SAD!");
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            { Console.WriteLine("no match"); }
+            
+
+
+            //   Console.WriteLine("Whaddup!");
+            Console.ReadLine();
+
+        }
+    }
+
+    enum Candidates
+    {   Trump,
+        Kasich,
+        Jeb
+
+
+    }
+}
