@@ -1,0 +1,45 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+
+namespace ReadTextFileWhile
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {   try {
+
+
+                StreamReader myReader = new StreamReader("Values1.txt");  //using the streamreader object to open up the values text file
+                string line = "";   //declare an emtpy string called line                               
+
+                while (line != null)     //iterates through as long as the line variable is not null-uknown or indeterminate value 
+                {
+                    line = myReader.ReadLine();
+                    if (line != null)
+                        Console.WriteLine(line);
+                }
+
+                myReader.Close();
+            } catch (DirectoryNotFoundException e)
+            { Console.WriteLine("couldn't find the file, are you sure the directory exists at all?"); }
+            catch (FileNotFoundException e)
+            { Console.WriteLine("Couldn't find the file, are you sure you're looking for the right one?"); }
+            catch (Exception e)
+            {
+                Console.WriteLine("I've got a bad feeling about this...: {0}", e.Message);
+            }
+            finally
+            {
+                //perform any cleanup to roll back the data or close onnections
+                // to files, database, network, etc. 
+            }
+            Console.ReadLine();
+
+            
+        }
+    }
+}
