@@ -1,0 +1,12 @@
+print ('Who are you voting for')
+
+name = input()
+
+if name == 'Trump':
+    print('Good job son')
+elif name == 'Jeb':
+    print('So you are a JebHead? Want some Gauc?')
+elif name == ('Hillary'):
+    print ('Ahh, so you are CTR huh?')
+else:
+    print ('Are ya shilling, son?')
