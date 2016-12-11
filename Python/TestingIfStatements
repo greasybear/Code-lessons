@@ -1,12 +1,24 @@
 print ('Who are you voting for')
 
-name = input()
+while True == True:
+    name = input()
 
-if name == 'Trump':
-    print('Good job son')
-elif name == 'Jeb':
-    print('So you are a JebHead? Want some Gauc?')
-elif name == ('Hillary'):
-    print ('Ahh, so you are CTR huh?')
-else:
-    print ('Are ya shilling, son?')
+    if name == 'Trump':
+        print('Good job son')
+    elif name == 'Jeb':
+        print('So you are a JebHead? Want some Gauc?')
+    elif name == 'Hillary':
+        print ('Ahh, so you are CTR huh?')
+    elif name == 'Johnson':
+        print ('What is allepo?')
+    elif name == 'Cruz':
+        print ('Ahh, so you are a CruzMissile, huh?')
+    elif name == 'Carson':
+        print ('WAKE ME UP INSIDE, WAKE ME UP INSIDE!')
+    elif name == 'Kasich':
+        print ('BITES SO HUUGE, I NEVER SAW!!')
+    elif name == 'Rand Paul':
+        print ('I dont think you heard me, you are having a hard time tonight')
+        
+    else:
+        print ('Are ya shilling, son?')
