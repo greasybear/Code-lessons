@@ -19,6 +19,8 @@ while True == True:
         print ('BITES SO HUUGE, I NEVER SAW!!')
     elif name == 'Rand Paul':
         print ('I dont think you heard me, you are having a hard time tonight')
+    elif name == 'Ted':
+        print ('Give me the delegates, Dahnuld...')
         
     else:
         print ('Are ya shilling, son?')
