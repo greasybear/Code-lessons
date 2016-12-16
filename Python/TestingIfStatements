@@ -1,6 +1,6 @@
 print ('Who are you voting for')
 
-while True == True:
+while True:
     name = input()
 
     if name == 'Trump':
