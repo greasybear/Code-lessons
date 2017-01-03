@@ -1,0 +1,9 @@
+spam = ['cat', 'dog', 'bat']
+spam.index('dog')
+#returns index number for string
+spam.append('moose')
+#adds string 'moose' to end of list
+spam.insert(2, 'chicken')
+#adds string 'chicken' to index number of 2
+print(spam)
+#prints the list for example of results
