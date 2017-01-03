@@ -1,5 +1,5 @@
 #dictionaries
-myCats = {'size': 'fat', 'color': 'green', 'disposition': 'loud'}
+myCat = {'size': 'fat', 'color': 'green', 'disposition': 'loud'}
 #dictionaries use curly brackets with a key and a value
 'my cat has ' + myCat['color'] + 'fur.'
 #this will print "green" by calling the key in between the strings
@@ -7,7 +7,7 @@ spam = {12345: 'Luggage combo', 42: 'The Answer'}
 spam[12345]
 #this sets up another dictionary in which we call out the first key
 #Dictionary Methods
-myCats.keys()
+myCat.keys()
 #displays a list of keys
 list(myCat.keys())
 #displays same in list format
@@ -18,7 +18,7 @@ myCat.values()
 for k in myCat.keys():
     print(k)
 #this will print every key in the dictionary
-for v in eggs.values():
+for v in myCat.values():
     print(v)
 #this will print every value
 for k, v in myCat.items():
