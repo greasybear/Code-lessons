@@ -24,3 +24,17 @@ for v in myCat.values():
 for k, v in myCat.items():
     print(k,v)
 #this should print duples using the above method
+
+#new dictionary
+eggs= {'type':'sandwich', 'meat': 'bacon', 'filling': 'cheese', 'bread':'biscuit'}
+eggs.get('type', 'there is no key by that name')
+#the get method returns a value by key OR returns the second #argument
+
+#set default method. Here is what it does:
+if 'color' not in eggs:
+	eggs['color'] = 'yellow'
+#we are looking to place a value to a key ONLY if the key doesn't #exist
+#first we take away the yellow color value
+del eggs['color']
+#below is the method in actual action:
+eggs.setdefault('color', 'yellow')
