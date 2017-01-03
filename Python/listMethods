@@ -7,3 +7,12 @@ spam.insert(2, 'chicken')
 #adds string 'chicken' to index number of 2
 print(spam)
 #prints the list for example of results
+spam.remove('chicken')
+#searches for the first instance of this string and removes it
+del spam[0]
+#takes the index of 0 and removes the value from the list
+spam.sort()
+#sorts the list in ASCII-betical order
+spam.sort(key=str.lower)
+#sorts by true alphabetical order
+print(spam)
