@@ -1,40 +1,69 @@
 #dictionaries
 myCat = {'size': 'fat', 'color': 'green', 'disposition': 'loud'}
+
 #dictionaries use curly brackets with a key and a value
+
 'my cat has ' + myCat['color'] + 'fur.'
+
 #this will print "green" by calling the key in between the strings
+
 spam = {12345: 'Luggage combo', 42: 'The Answer'}
+
 spam[12345]
+
 #this sets up another dictionary in which we call out the first key
+
 #Dictionary Methods
+
 myCat.keys()
+
 #displays a list of keys
+
 list(myCat.keys())
+
 #displays same in list format
+
 myCat.items()
+
 #displays duples of key and respective values
+
 myCat.values()
+
 #displays values
+
 for k in myCat.keys():
-    print(k)
+
+print(k)
+
 #this will print every key in the dictionary
+
 for v in myCat.values():
     print(v)
+
 #this will print every value
+
 for k, v in myCat.items():
     print(k,v)
 #this should print duples using the above method
 
 #new dictionary
+
 eggs= {'type':'sandwich', 'meat': 'bacon', 'filling': 'cheese', 'bread':'biscuit'}
+
 eggs.get('type', 'there is no key by that name')
+
 #the get method returns a value by key OR returns the second #argument
 
 #set default method. Here is what it does:
+
 if 'color' not in eggs:
 	eggs['color'] = 'yellow'
 #we are looking to place a value to a key ONLY if the key doesn't #exist
+
 #first we take away the yellow color value
+
 del eggs['color']
+
 #below is the method in actual action:
+
 eggs.setdefault('color', 'yellow')
