@@ -1,0 +1,8 @@
+name = 'alice'
+place = 'Main Street'
+time = '6 PM'
+food = 'turnips'
+'Hello ' + name + ', you are invited to a  party at ' + time+ place + 'at ' +time + '. Please bring ' + food
+
+'Hello %s, you are invited to a party at %s at %s. Please bring %s.' %(name, place, time, food)
+#these conversion specifiers are designated using %s, and then the values passed in order are concatinated into the string
