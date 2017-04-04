@@ -1,0 +1,11 @@
+import re
+
+message = 'Call me 123-123-1234 or another number at 123-321-4321 ok?'
+
+phoneNumRegex = re.compile(r'\d\d\d-\d\d\d-\d\d\d\d')
+
+#mo = phoneNumRegex.search(message) #this will find the first one
+mo = phoneNumRegex.findall(message)  # this will find all of them
+print(mo)  
+
+#print(mo.group())
