@@ -1,0 +1,11 @@
+import re
+batRegex = re.compile(r'Bat(wo)?man') # in this variable it compiles for batman while allowing "wo" to appear 0 to 1 times. The "?" specifies the 0 to 1
+mo = batRegex.search('the adventures of Batwoman')
+
+mo.group()  #this will find the batwoman as it allowed "wo" to appear 1 time
+
+phoneRegex = re.compile(r'(\d\d\d-)?\d\d\d-\d\d\d\d') #this will allow it to find (optionally)just the last 7 digits
+
+mo = phoneRegex.search('my phone number 123-1234')
+print(mo.group())
+
