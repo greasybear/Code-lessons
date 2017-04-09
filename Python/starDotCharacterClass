@@ -1,0 +1,32 @@
+import re
+
+beginsWithHelloRegex = re.compile(r'^Hello')#the ^ means it MUST start with the raw string
+print(beginsWithHelloRegex.findall('jHello!'))#finds nothing
+print(beginsWithHelloRegex.findall('Hello there!'))#finds string
+
+endsWithWorldRegex = re.compile(r'World!$')#means string MUST end with World!
+print(endsWithWorldRegex.findall('Hello World!'))
+
+allDigitsRegex = re.compile(r'^\d+$')#means must start^ and must end$ with one or more digits
+print(allDigitsRegex.search('1239531'))#this finds the whole string as it starts and ends with digits
+print(allDigitsRegex.search('12312453F12395')==None)#this is true as although it starts and ends with digits
+#the combo of the two means the whole string must all be digits
+
+atRegex = re.compile(r'.at')#the . character means ANYTHING
+print(atRegex.findall('the cat who sat ate a bat on a rat'))#finds ANYTHING plus the string "at"
+
+nameRegex = re.compile(r'First Name: (.*) Last Name: (.*)')#finds ANYTHING "." after string and stops at the second string "*"
+#known as the dot star 
+print(nameRegex.findall('First Name: Al Last Name: Willis'))
+
+serve= '<To serve human> for dinner.>'
+nongreedy = re.compile(r'<(.*?)>')#? means nongreedy
+print(nongreedy.findall(serve))
+greedy = re.compile(r'<(.*)>')#take the ? out and its goes greedy
+print(greedy.findall(serve))
+
+vowelRegex = re.compile(r'.*', re.DOTALL) #finds ALL characters including newline
+print(vowelRegex.findall('hello \nWolrd'))
+
+caseRegex = re.compile(r'[aeiou]', re.I)#this finds all regardless of capitalization
+print(caseRegex.findall('AI is cool because AI is EOU'))
