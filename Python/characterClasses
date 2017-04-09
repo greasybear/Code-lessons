@@ -1,0 +1,15 @@
+import re
+
+lyrics = '12 drummers druming, 11 pipers piping, 10 ducks, 9 ladies dancing'
+
+xmasRegex = re.compile(r'\d+\s\w+')#this is 1/more digits, a space, then 1/more any character
+print(xmasRegex.findall(lyrics))
+
+vowelRegex = re.compile(r'[aeiouAEIOU]')#square brackets creates a list of findables
+print(vowelRegex.findall('Robocop eats babyfood'))
+
+doubleVowelRegex = re.compile(r'[aeiouAEIOU]{2}')#brackets specify instances of repitition
+print(doubleVowelRegex.findall('Robocop eats baby food'))
+
+negativeRegex = re.compile(r'[^aeiouAEIOU]')#the ^ asks for everything NOT what follows
+print(negativeRegex.findall(lyrics)) 
