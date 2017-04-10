@@ -1,0 +1,19 @@
+import re
+namesRegex = re.compile(r'Agent \w+')
+code = 'Agent Alice gave the document to Agent Bob'
+print(namesRegex.sub(r'REDACTED',code))
+
+namesRegex= re.compile(r'Agent (\w)\w*')#groups 1st character in sub method
+print(namesRegex.sub(r'Agent \1****', code))#replaces name with (group1) then stars
+
+#verbose method
+numberRegex=re.compile(r'''
+\d\d\d   #area code (no parans)
+-        #first dash 
+\d\d\d   #first 3 digits
+-
+\d\d\d\d #last 4 digits
+''', re.VERBOSE | re.I | re.DOTALL)
+# | allows you to pass multiple args to compile function
+print(numberRegex.findall('123-123-1234 is the first phone number 123-1233 is the second and 123-321-3214-x3214 is the last'))
+
