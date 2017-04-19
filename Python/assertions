@@ -11,4 +11,6 @@ def switchLights(intersection):
     assert 'red' in intersection.values(), 'Neither light is red!' +str(intersection)
 print(market_2nd)
 switchLights(market_2nd)
-print(market_2nd)
+print(market_2nd) #the assertion is raised because neither light is red
+#this is a programmer bug, not a user bug, and wouldn't cause
+#the program to crash unless the assertion was raise
