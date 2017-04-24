@@ -1,0 +1,9 @@
+import requests as rq
+
+myFile = rq.get('http://automatetheboringstuff.com/files/rj.txt')
+
+myFile = open('RomeoAndJuliet', 'wb')
+#stores the file on the CWD
+for chunk in res.iter_content(100000):
+    myFile.write(chunk)
+myFile.close()
