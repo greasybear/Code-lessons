@@ -1,0 +1,9 @@
+from selenium import webdriver
+#opens browser using geckodriver
+bro = webdriver.Firefox(executable_path=r'C:\Users\Awillis\Documents\gekco\geckodriver.exe')
+#goes to URL
+bro.get('https:\\automatetheboringstuff.com')
+#assigns css selector to elem variable
+elem = bro.find_element_by_css_selector('.main > div:nth-child(1) > ul:nth-child(17) > li:nth-child(1) > a:nth-child(1)')
+#click link
+elem.click()
