@@ -1,0 +1,12 @@
+import bs4, requests as rq
+
+res = rq.get('https://www.amazon.com/Automate-Boring-Stuff-Python-Programming/dp/1593275994')
+#downloads site
+res.raise_for_status() #raises exception if download was incorrect
+raises exception if download went bad
+soup = bs4.BeautifulSoup(res.text, 'html.parser')
+uses bs4 module to parse html code, 2nd arg is type
+elems= soup.select("form#addToCart span.a-size-medium.header-price.a-color-price")
+assigns CSS selector to elems variable
+print(elems[0].text.strip())
+strips blank spaces and prints number
