@@ -1,7 +1,8 @@
 from selenium import webdriver
 import time, pyautogui as ag
-def moveClick(x,y):
+def moveClick(x,y,z):
     ag.moveTo(x,y)
+    time.sleep(z)
     ag.click()
 ag.FAILSAFE = False
 bro = webdriver.Firefox(executable_path=r'C:/Users/Awillis/Documents/Gecko/geckodriver.exe')
@@ -10,8 +11,8 @@ moveClick(613,469)
 ag.typewrite('awillis')
 moveClick(614,501)
 ag.typewrite('7478TaylorJones')
-moveClick(762,540)
-time.sleep(3)
+moveClick(762,540, 3)
+
 
 qlik = bro.find_element_by_css_selector('.ms-rteTableHeaderOddCol-0 > p:nth-child(1) > a:nth-child(1) > img:nth-child(1)')
 qlik.click()
@@ -20,28 +21,19 @@ moveClick(613,469)
 ag.typewrite('awillis')
 moveClick(614,501)
 ag.typewrite('7478TaylorJones')
-moveClick(762,540)
-time.sleep(3)
+moveClick(762,540, 4)
 life= bro.find_element_by_css_selector('#appList0 > span:nth-child(1) > span:nth-child(3) > a:nth-child(2)')
 life.click()
 time.sleep(15) #should be 
-moveClick(799,167) #all date filtering
-time.sleep(15)
-moveClick(154,264)
-time.sleep(2)
-moveClick(191,510)
-time.sleep(5) #point of edit
-moveClick(451,215)
-time.sleep(3)
+moveClick(799,167,15) #all date filtering
+moveClick(154,264,2)
+moveClick(191,510, 5) # point of edit
+moveClick(451,215, 3)
 ag.keyDown('ctrl')
-moveClick(444,396)
-time.sleep(2)
-moveClick(408,396)
-time.sleep(2)
-moveClick(375,396)
-time.sleep(2)
-moveClick(335,396)
-time.sleep(7)
+moveClick(444,396, 2)
+moveClick(408,396, 2)
+moveClick(375,396, 2)
+moveClick(335,396, 7)
 ag.keyUp('ctrl')
 ag.moveTo(1012,400) #slect cal year
 ag.click()
@@ -50,10 +42,8 @@ ag.click()
 time.sleep(2)
 ag.click()
 time.sleep(4)
-moveClick(1507,163)
-time.sleep(1)
-moveClick(1284,167)
-time.sleep(3)
+moveClick(1507,163,1)
+moveClick(1284,167, 3)
 ag.moveTo(1362,280)
 ag.doubleClick()
 time.sleep(10) #testing time
