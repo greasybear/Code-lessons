@@ -1,0 +1,24 @@
+import openpyxl as op
+
+wb = op.Workbook()
+wb.get_sheet_names()
+
+sheet = wb.get_sheet_by_name('Sheet')
+sheet['A1'].value
+sheet['A1'] = 42
+sheet['A1'] = 'Hello'
+
+wb.save('exampleChange.xlsx')
+#above is saving method
+
+
+sheet2=wb.create_sheet()
+sheet2.title= 'newsheetname'
+wb.get_sheet_names()
+['Sheet', 'newsheetname']
+
+wb.save('exampleChange.xlxs')
+wb.create_sheet(index=0, title='MyOtherSheet')
+wb.save('exampleChange.xlxs')
+wb.get_sheet_names
+
