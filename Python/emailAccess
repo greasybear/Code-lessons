@@ -1,0 +1,8 @@
+from backports import ssl
+import imapclient
+
+context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+context.verify_mode = ssl.CERT_NONE
+context.check_hostname = False
+
+conn = imapclient.IMAPClient("imap.googlemail.com", ssl=True, , ssl_context=context)
