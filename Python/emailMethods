@@ -1,0 +1,13 @@
+import smtplib as lib
+
+conn = lib.SMTP('smtp.gmail.com', 587)
+#establishes connection
+conn.ehlo()
+conn.starttls()
+conn.login('AnEmailAddress@gmail.com', 'PASSWORD')
+#login, first argument is address, second is password
+conn.sendmail('AnEmailAddress@gmail.com', 'ADifferentEmailAddress@hotmail.com', 'Subject: So Long.... \n\n Dear Andrew\n Thanks for all the stuff\n\n -Andrew')
+#first arg is from, second is to, third is body of email
+#new line designates going from subject to body
+
+conn.quit() #this quits the connection
