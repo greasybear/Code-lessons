@@ -1,0 +1,11 @@
+import pyautogui as pg
+pg.screenshot()
+#returns screenshot image
+pg.screenshot('c:\\screenshot_example.png')
+#saves to file screenshot
+pg.LocateOnScreen('c:\\randomPic.png')
+#this uses a previously saved image to locate the pixels on the current screen
+#this gives you the x y coords and also the height and width of the image
+pg.LocateCenterOnScreen('c:\\randomPic.png')
+#this will give the x y coords so you can use this as an arg
+#     for a locate and click function or something else
