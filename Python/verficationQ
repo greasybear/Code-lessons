@@ -1,0 +1,12 @@
+def getSearch():
+    import pyautogui as pg
+    pg.click(x=137,y=10)
+    pg.click(pg.LocateCenterOnScreen('c:\\searching.PNG'))
+    pg.click(x=376,y=10)
+    pg.click(pg.LocateCenterOnScreen('c:\\searching.PNG'))
+    pg.click
+    pg.click(x=608,y=10)
+    pg.click(pg.LocateCenterOnScreen('c:\\searching.PNG'))
+    pg.click(x=858, y=10)
+    pg.click(pg.locateCenterOnScreen('c:\\searching.PNG'))
+
