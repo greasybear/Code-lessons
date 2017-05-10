@@ -1,1 +1,10 @@
+class Movie:
+    def __init__(self, name, genre):
+        self.name = name
+        self.genre = genre
+       
+from movie import Movie
 
+myMovie= Movie('The Matrix', 'Sci-Fi')
+
+print(myMovie.name)
