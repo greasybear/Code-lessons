@@ -2,9 +2,22 @@ class Movie:
     def __init__(self, name, genre):
         self.name = name
         self.genre = genre
-       
-from movie import Movie
+    def __repr__(self):
+        return "<Movie {}>".format(self.name)
+     
+class User:
+    def __init__(self, name):
+        self.name=name
+        self.movies = []
+    def __repr__(self):
+        return "<User {}>".format(self.name)
+
+user = User('Andrew')
 
 myMovie= Movie('The Matrix', 'Sci-Fi')
 
-print(myMovie.name)
+user.movies.append(myMovie)
+
+
+print(user)
+print(user.movies)
