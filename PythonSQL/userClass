@@ -1,0 +1,41 @@
+class User:
+    def __init__(self, name):
+        self.name=name
+        self.movies = []
+    def __repr__(self):
+        return "<User {}>".format(self.name)
+
+    # def watchedIt(self):         this uses a for loop to add movies to the list based on boolean
+    #     watchedMovies= []
+    #     for movie in self.movies:
+    #         if movie.watched == True:
+    #             watchedMovies.append(movie)
+    #     return watchedMovies
+    def addMovie(self, name, genre):
+        movie = Movie(name, genre, False)
+        self.movies.append(movie)
+    def removeMovie(self, name):
+        self.movies = list(filter(lambda movie: movie.name != name, self.movies))
+
+    def watchedIt(self):              # here we use the filter method to return if its watched
+        watchedMovies= list(filter(lambda x: x.watched, self.movies))   #this filters non-watched movies, then converts
+        return watchedMovies                                                          #to a list
+
+    def saveToFile(self):
+        with open("{}.txt".format(self.name), 'w') as f:
+            f.write(self.name + "\n")
+            for movie in self.movies:
+                f.write("{},{},{}\n".format(movie.name, movie.genre, str(movie.watched)))
+    @classmethod
+    def readUserName(cls, filename):
+        with open(filename, 'r') as f:
+            content = f.readlines()
+            username = content[0]
+            movies = []
+            for line in content[1:]:
+                movieData = line.split(",") #'name', 'genre', 'watched'
+                movies.append(Movie(movieData[0], movieData[1], movieData[2] == "True"))
+
+            user = cls(username)
+            user.movies = movies
+            return user
