@@ -1,0 +1,16 @@
+from user import User
+# user.addMovie('The Matrix', 'Action')
+# user.addMovie('Waterworld', 'Sci-Fi')
+#
+# print(user.movies)
+
+user = User.readUserName('Andrew.txt')
+
+print(user.name)
+print(user.movies)
+
+# user.addMovie('WaterWorld', 'Action')
+# user.addMovie('The Matrix', 'Sci-Fi')
+# user.addMovie('Prince of Theives', 'Action')
+#
+# user.saveToFile()
