@@ -12,12 +12,23 @@ class User:
     def __repr__(self):
         return "<User {}>".format(self.name)
 
+    # def watchedIt(self):         this uses a for loop to add movies to the list based on boolean
+    #     watchedMovies= []
+    #     for movie in self.movies:
+    #         if movie.watched == True:
+    #             watchedMovies.append(movie)
+    #     return watchedMovies
+    def watchedIt(self):              # here we use the filter method to return if its watched
+        watchedMovies= list(filter(lambda x: x.watched, self.movies))   #this filters non-watched movies, then converts
+        return watchedMovies       
+
 user = User('Andrew')
 
-myMovie= Movie('The Matrix', 'Sci-Fi')
+myMovie= Movie('The Matrix', 'Sci-Fi', False)
+secondMovie=Movie('Waterworld', 'Action', True)
 
 user.movies.append(myMovie)
+user.movies.append(secondMovie)
 
 
-print(user)
-print(user.movies)
+print(user.watchedIt())
