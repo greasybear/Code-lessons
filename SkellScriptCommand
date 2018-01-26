@@ -1,0 +1,58 @@
+ void FixedUpdate()
+    {
+        //selfOrder.destination = transform;
+
+        if (Input.GetKey(KeyCode.Alpha1) || Input.GetKey(KeyCode.Space))
+        {
+            skelType = Skeller.SkelType.infantry;
+
+            timer += Time.deltaTime;
+            while (timer > 1)
+            {
+
+                infantryIcon.rectTransform.sizeDelta = Vector2.Lerp(notSelected, selected, timer * smoothTime);
+                pikeIcon.rectTransform.sizeDelta = notSelected;
+                rangedIcon.rectTransform.sizeDelta = notSelected;
+            }
+            //if (timer >= 1)
+            //{
+            //    timer = 0f;
+            //}
+        }
+        else if (Input.GetKey(KeyCode.Alpha2) || Input.GetKey(KeyCode.LeftShift))
+        {
+            skelType = Skeller.SkelType.ranged;
+            timer += Time.deltaTime;
+            while (timer > 1)
+            {
+                infantryIcon.rectTransform.sizeDelta = notSelected;
+                pikeIcon.rectTransform.sizeDelta = notSelected;
+                rangedIcon.rectTransform.sizeDelta = Vector2.Lerp(notSelected, selected, timer * smoothTime);
+            }
+            //if (timer >= 1)
+            //{
+            //    timer = 0f;
+            //}
+        }
+        else if (Input.GetKey(KeyCode.Alpha3) || Input.GetKey(KeyCode.LeftControl))
+        {
+            skelType = Skeller.SkelType.pike;
+            timer += Time.deltaTime;
+            while (timer > 1)
+            {
+                infantryIcon.rectTransform.sizeDelta = notSelected;
+                pikeIcon.rectTransform.sizeDelta = Vector2.Lerp(notSelected, selected, timer * smoothTime);
+                rangedIcon.rectTransform.sizeDelta = notSelected;
+            }
+            //if (timer >= 1)
+            //{
+            //    timer = 0f;
+            //}
+        }
+        //else if (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.LeftShift) 
+        //    || Input.GetKey(KeyCode.Alpha1) || Input.GetKey(KeyCode.Alpha2) || Input.GetKey(KeyCode.Alpha3))
+        //{
+        //    infantryIcon.rectTransform.sizeDelta = new Vector2(100, 100);
+        //    pikeIcon.rectTransform.sizeDelta = new Vector2(100, 100);
+        //    rangedIcon.rectTransform.sizeDelta = new Vector2(100, 100);
+        //}
