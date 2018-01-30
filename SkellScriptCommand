@@ -1,58 +1,74 @@
- void FixedUpdate()
+ public UnityEngine.UI.Text infantryCountText;
+    public UnityEngine.UI.Text rangedCountText;
+    public UnityEngine.UI.Text pikeCountText;
+    public UnityEngine.UI.Image infantryIcon;
+    public UnityEngine.UI.Image rangedIcon;
+    public UnityEngine.UI.Image pikeIcon;
+
+    Vector2 selected = new Vector2(200, 200);
+    Vector2 notSelected = new Vector2(50, 50);
+    Vector2 normalSize = new Vector2(100, 100);
+    public float smoothTime = 10f;
+
+    public float timer;
+
+    
+
+    void FixedUpdate()
     {
         //selfOrder.destination = transform;
+
+        
+
 
         if (Input.GetKey(KeyCode.Alpha1) || Input.GetKey(KeyCode.Space))
         {
             skelType = Skeller.SkelType.infantry;
 
-            timer += Time.deltaTime;
-            while (timer > 1)
-            {
+            
 
-                infantryIcon.rectTransform.sizeDelta = Vector2.Lerp(notSelected, selected, timer * smoothTime);
-                pikeIcon.rectTransform.sizeDelta = notSelected;
-                rangedIcon.rectTransform.sizeDelta = notSelected;
+            if (timer < 1)
+            {
+                timer += Time.deltaTime;
+
+                infantryIcon.rectTransform.sizeDelta = Vector2.Lerp(infantryIcon.rectTransform.sizeDelta, selected, timer * smoothTime);
+                pikeIcon.rectTransform.sizeDelta = Vector2.Lerp(pikeIcon.rectTransform.sizeDelta, notSelected, timer * smoothTime);
+                rangedIcon.rectTransform.sizeDelta = Vector2.Lerp(rangedIcon.rectTransform.sizeDelta, notSelected, timer * smoothTime);
             }
-            //if (timer >= 1)
-            //{
-            //    timer = 0f;
-            //}
+           
         }
         else if (Input.GetKey(KeyCode.Alpha2) || Input.GetKey(KeyCode.LeftShift))
         {
             skelType = Skeller.SkelType.ranged;
-            timer += Time.deltaTime;
-            while (timer > 1)
+            if (timer < 1)
             {
-                infantryIcon.rectTransform.sizeDelta = notSelected;
-                pikeIcon.rectTransform.sizeDelta = notSelected;
-                rangedIcon.rectTransform.sizeDelta = Vector2.Lerp(notSelected, selected, timer * smoothTime);
+                timer += Time.deltaTime;
+
+                infantryIcon.rectTransform.sizeDelta = Vector2.Lerp(infantryIcon.rectTransform.sizeDelta, notSelected, timer * smoothTime);
+                pikeIcon.rectTransform.sizeDelta = Vector2.Lerp(pikeIcon.rectTransform.sizeDelta, notSelected, timer * smoothTime);
+                rangedIcon.rectTransform.sizeDelta = Vector2.Lerp(rangedIcon.rectTransform.sizeDelta, selected, timer * smoothTime);
             }
-            //if (timer >= 1)
-            //{
-            //    timer = 0f;
-            //}
+
         }
         else if (Input.GetKey(KeyCode.Alpha3) || Input.GetKey(KeyCode.LeftControl))
         {
             skelType = Skeller.SkelType.pike;
-            timer += Time.deltaTime;
-            while (timer > 1)
+          
+            if (timer < 1)
             {
-                infantryIcon.rectTransform.sizeDelta = notSelected;
-                pikeIcon.rectTransform.sizeDelta = Vector2.Lerp(notSelected, selected, timer * smoothTime);
-                rangedIcon.rectTransform.sizeDelta = notSelected;
+                timer += Time.deltaTime;
+
+                infantryIcon.rectTransform.sizeDelta = Vector2.Lerp(infantryIcon.rectTransform.sizeDelta, notSelected, timer * smoothTime);
+                pikeIcon.rectTransform.sizeDelta = Vector2.Lerp(pikeIcon.rectTransform.sizeDelta, selected, timer * smoothTime);
+                rangedIcon.rectTransform.sizeDelta = Vector2.Lerp(rangedIcon.rectTransform.sizeDelta, notSelected, timer * smoothTime);
             }
-            //if (timer >= 1)
-            //{
-            //    timer = 0f;
-            //}
+
         }
-        //else if (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.LeftShift) 
-        //    || Input.GetKey(KeyCode.Alpha1) || Input.GetKey(KeyCode.Alpha2) || Input.GetKey(KeyCode.Alpha3))
-        //{
-        //    infantryIcon.rectTransform.sizeDelta = new Vector2(100, 100);
-        //    pikeIcon.rectTransform.sizeDelta = new Vector2(100, 100);
-        //    rangedIcon.rectTransform.sizeDelta = new Vector2(100, 100);
-        //}
+        else if (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.LeftShift)
+            || Input.GetKey(KeyCode.Alpha1) || Input.GetKey(KeyCode.Alpha2) || Input.GetKey(KeyCode.Alpha3))
+        {
+            infantryIcon.rectTransform.sizeDelta = Vector2.Lerp(infantryIcon.rectTransform.sizeDelta, normalSize, timer * smoothTime);
+            pikeIcon.rectTransform.sizeDelta = Vector2.Lerp(pikeIcon.rectTransform.sizeDelta, normalSize, timer * smoothTime);
+            rangedIcon.rectTransform.sizeDelta = Vector2.Lerp(rangedIcon.rectTransform.sizeDelta, normalSize, timer * smoothTime);
+            timer = 0f;
+        }
