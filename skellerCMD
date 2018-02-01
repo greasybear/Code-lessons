@@ -1,0 +1,274 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System.Linq;
+
+public class SkellerCommand : MonoBehaviour
+{
+
+    private static SkellerCommand _sc;
+
+    public static SkellerCommand sc
+    {
+        get
+        {
+            if(_sc == null)
+            {
+                _sc = GameObject.Find("Player").GetComponent<SkellerCommand>();
+            }
+            return _sc;
+        }
+    }
+
+    public List<Skeller> skellers = new List<Skeller>();
+
+    public int skellerCount;
+
+    public void AddSkeller(Skeller s)
+    {
+        skellers.Add(s);
+        if(availableSkellers.IndexOf(s) == -1)
+        {
+            availableSkellers.Add(s);
+            s.offset = OffsetAvailable();
+        }
+        s.move.SetTarget(transform, s.offset);
+        skellerCount++;
+    }
+
+    // Use this for initialization
+    void Awake()
+    {
+        rClickInit = Vector3.zero;
+        rClickCurrent = Vector3.zero;
+        //selfOrder = new Order();
+        //selfOrder.destination = transform;
+    }
+
+    //public Order currentOrder;
+    //public Order selfOrder;
+
+    public List<Skeller> selectedSkellers = new List<Skeller>();
+    public List<Skeller> availableSkellers = new List<Skeller>();
+    public List<Skeller> busySkellers = new List<Skeller>();
+
+    public Skeller.UnitType skelType;
+
+    List<Skeller> filt(List<Skeller> l, Skeller.UnitType t)
+    {
+        if (t == Skeller.UnitType.none)
+            return l;
+
+        return l.Where(x => x.unitType == t).ToList();
+    }
+
+    int SkelCount(Skeller.UnitType t)
+    {
+        return filt(skellers, t).Count;
+    }
+
+    int lastSelCount;
+
+    // Update is called once per frame
+    float last = 0f;
+    public float selectRate = .1f;
+
+    public float selectTime = 0f;
+    public float selectRadius = 0f;
+
+    public Selector selectCircle;
+    Vector3 mouseHit;
+
+    void SelectRadius()
+    {
+
+    }
+
+    public LayerMask mask;
+
+
+
+    Vector3 rClickInit;
+    Vector3 rClickCurrent;
+
+    public UnityEngine.UI.Text infantryCountText;
+    public UnityEngine.UI.Text rangedCountText;
+    public UnityEngine.UI.Text pikeCountText;
+    public UnityEngine.UI.Image infantryIcon;
+    public UnityEngine.UI.Image rangedIcon;
+    public UnityEngine.UI.Image pikeIcon;
+
+    Vector2 selected = new Vector2(200, 200);
+    Vector2 notSelected = new Vector2(50, 50);
+    Vector2 normalSize = new Vector2(100, 100);
+    public float smoothTime = 10f;
+
+    float timer;
+    int iconNumber;
+    
+    void iconSwitch(UnityEngine.UI. Image grower, UnityEngine.UI.Image shower1, UnityEngine.UI.Image shower2)
+    {
+        grower.rectTransform.sizeDelta = Vector2.Lerp(grower.rectTransform.sizeDelta, selected, timer * smoothTime);
+        shower1.rectTransform.sizeDelta = Vector2.Lerp(shower1.rectTransform.sizeDelta, notSelected, timer * smoothTime);
+        shower2.rectTransform.sizeDelta = Vector2.Lerp(shower2.rectTransform.sizeDelta, notSelected, timer * smoothTime);
+    }
+
+    void FixedUpdate()
+    {
+        //selfOrder.destination = transform;
+        timer += Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Space))
+        {
+            skelType = Skeller.UnitType.infantry;
+            timer = 0f;
+            iconNumber = 1;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            skelType = Skeller.UnitType.ranged;
+            timer = 0f;
+            iconNumber = 2;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            skelType = Skeller.UnitType.pike;
+            timer = 0f;
+            iconNumber = 3;
+        }
+
+        if(iconNumber == 1)
+        {
+            iconSwitch(infantryIcon, pikeIcon, rangedIcon);
+        }
+        else if (iconNumber ==2)
+        {
+            iconSwitch(rangedIcon, infantryIcon, pikeIcon);
+        }
+        else if (iconNumber ==3)
+        {
+            iconSwitch(pikeIcon, rangedIcon, infantryIcon);
+        }
+
+        else if (iconNumber==4)
+        {
+            infantryIcon.rectTransform.sizeDelta = Vector2.Lerp(infantryIcon.rectTransform.sizeDelta, normalSize, timer * smoothTime);
+            pikeIcon.rectTransform.sizeDelta = Vector2.Lerp(pikeIcon.rectTransform.sizeDelta, normalSize, timer * smoothTime);
+            rangedIcon.rectTransform.sizeDelta = Vector2.Lerp(rangedIcon.rectTransform.sizeDelta, normalSize, timer * smoothTime);
+        }
+
+
+        if (Input.GetKey(KeyCode.E))
+        {
+            GameObject go = (GameObject)Instantiate(Resources.Load("skeller"), transform.position, Quaternion.identity);
+        }
+
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        //if (Input.GetMouseButtonDown(1) && !Input.GetMouseButton(0) && currentOrder != null)
+        {
+            //currentOrder = null;
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            selectTime = 0f;
+        }
+
+        if (Input.GetMouseButton(1))
+        {
+            selectTime += Time.deltaTime;
+            selectRadius = Mathf.Pow(selectTime + 1f, 3f) + Mathf.Log(selectTime + 1f) * 2f;
+
+            
+
+            if (Physics.Raycast(ray, out hit))
+            {
+
+                if(rClickInit == Vector3.zero)
+                {
+                    rClickInit = hit.point;
+                }
+
+                rClickCurrent = hit.point;
+
+                if (selectTime > .01f && filt(busySkellers, skelType).Count > 0 && Vector3.Distance(hit.point, transform.position) < 4f)
+                {
+                    filt(busySkellers, skelType)[0].move.SetTarget(transform, OffsetAvailable());
+                    if(availableSkellers.IndexOf(filt(busySkellers, skelType)[0]) == -1)
+                        availableSkellers.Add(filt(busySkellers, skelType)[0]);
+                    busySkellers.Remove(filt(busySkellers, skelType)[0]);
+
+                    selectTime = 0f;
+                }
+                else if (selectTime > .01f && filt(availableSkellers, skelType).Count > 0)
+                {
+                    if(selectedSkellers.IndexOf(filt(availableSkellers, skelType)[0]) == -1)
+                    {
+
+                        filt(availableSkellers, skelType)[0].move.SetTarget(hit.point, Offset());
+                        selectedSkellers.Add(filt(availableSkellers, skelType)[0]);
+                        busySkellers.Add(filt(availableSkellers, skelType)[0]);
+                        availableSkellers.RemoveAt(availableSkellers.IndexOf(filt(availableSkellers, skelType)[0]));
+
+                        selectTime = 0f;
+                    }
+                }
+                
+            }
+        }
+
+
+
+        if (Input.GetMouseButtonUp(1))
+        {
+            rClickInit = Vector3.zero;
+            selectRate = .1f;
+            selectRadius = 0f;
+
+            rClickInit = Vector3.zero;
+
+            //currentOrder = null;
+            selectedSkellers.Clear();
+            skelType = Skeller.UnitType.none;
+
+            timer = 0f;
+            iconNumber = 4;
+        }
+
+
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            var point = hit.point;
+            point.y = 0f;
+
+            selectCircle.transform.position = point;
+
+        }
+
+        infantryCountText.text = "Infantry (1): " + SkelCount(Skeller.UnitType.infantry).ToString();
+        rangedCountText.text = "Ranged (2): " + SkelCount(Skeller.UnitType.ranged).ToString();
+        pikeCountText.text = "Pike (3): " + SkelCount(Skeller.UnitType.pike).ToString();
+    }
+
+
+
+    public float offsetMultiplier = 1f;
+
+    Vector3 Offset()
+    {
+        float multiplier = 1f / Mathf.Clamp(Vector3.Distance(rClickInit, rClickCurrent),1f,10f);
+        var v = Random.insideUnitSphere.normalized * Mathf.Clamp(Mathf.Log(multiplier * selectedSkellers.Count), 0, 100);
+        v.y = 0f;
+        return v;
+    }
+
+    public Vector3 OffsetAvailable()
+    {
+        var v = Random.insideUnitSphere.normalized * Mathf.Clamp(Mathf.Log(offsetMultiplier * availableSkellers.Count), 0, 100);
+        v.y = 0f;
+        return v;
+    }
+}
