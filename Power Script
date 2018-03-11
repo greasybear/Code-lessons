@@ -1,0 +1,149 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+
+public class Power : MonoBehaviour {
+
+    public float playerPowerRange;
+
+    int abilityCycle = 1;
+
+    int skellerMask = 1 << 10;
+    int humanMask = 1 << 12;
+
+    public Text powerName;
+
+    void MakeBig()
+    {
+        //lerpTimer += Time.deltaTime;
+        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, playerPowerRange, skellerMask);
+
+        Collider randomGuy = enemiesInRange[Random.Range(0, enemiesInRange.Length)];
+
+        randomGuy.gameObject.transform.localScale += new Vector3(4, 4, 4);       
+
+        //randomGuy.gameObject.transform.localScale = Vector3.Lerp(randomGuy.gameObject.transform.localScale, new Vector3(4, 4, 4), lerpTimer);
+
+    }
+
+    void Update()
+    {
+        if ( abilityCycle == 7)
+        {
+            abilityCycle = 1;
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            abilityCycle += 1;
+
+        }
+
+            if (Input.GetKeyDown(KeyCode.G) && abilityCycle == 1)
+        { MakeBig(); }
+
+        //if (Input.GetKeyUp(KeyCode.G))
+        //{ lerpTimer = 0; }
+
+        if (Input.GetKeyDown(KeyCode.G) && abilityCycle == 2)
+        { MakeSmall(); }
+
+        if (Input.GetKey(KeyCode.G) && abilityCycle == 3)
+        { PullBaddies(); }
+
+        if (Input.GetKeyUp(KeyCode.G) && abilityCycle == 3)
+        { lerpTimer = 0; }
+
+        if (Input.GetKeyUp(KeyCode.G) && abilityCycle == 4)
+        { lerpTimer = 0; }
+
+        if (Input.GetKey(KeyCode.G) && abilityCycle == 4)
+        { PushBack(); }
+
+        if (Input.GetKeyDown(KeyCode.G) && abilityCycle == 5)
+        { LockMovement(); }
+
+        if (Input.GetKeyDown(KeyCode.G) && abilityCycle == 6)
+        { Lightning(); }
+
+        if ( abilityCycle == 1)
+        { powerName.text = "Make'em Big"; }
+        if (abilityCycle == 2)
+        { powerName.text = "Make'em Small"; }
+        if (abilityCycle == 3)
+        { powerName.text = "Pull 'em"; }
+        if (abilityCycle == 4)
+        { powerName.text = "Push 'em"; }
+        if (abilityCycle == 5)
+        { powerName.text = "Lock 'em"; }
+        if (abilityCycle == 6)
+        { powerName.text = "Lightening"; }
+               
+    }
+
+    void MakeSmall()
+    {
+        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, playerPowerRange, humanMask);
+
+        foreach (Collider badguy in enemiesInRange)
+        {           
+                badguy.transform.localScale -= new Vector3(.5f, .5f, .5f);         
+        }
+
+    }
+    public float lerpTimer;
+
+    void PullBaddies()
+    {
+        lerpTimer += Time.deltaTime;
+        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, playerPowerRange, humanMask);
+
+        foreach (Collider badguy in enemiesInRange)
+        {
+            badguy.transform.position = Vector3.MoveTowards(badguy.transform.position, gameObject.transform.position, lerpTimer);      
+        }
+    }
+
+    void PushBack()
+    {
+        lerpTimer += Time.deltaTime;
+        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, playerPowerRange, humanMask);
+
+        foreach (Collider badguy in enemiesInRange)
+        {           
+            badguy.transform.position = new Vector3(badguy.transform.position.x, 0, badguy.transform.position.z);
+            badguy.transform.position = Vector3.MoveTowards(badguy.transform.position, gameObject.transform.position, lerpTimer * -1);
+        }
+
+    }
+
+    void LockMovement()
+    {
+        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, playerPowerRange, humanMask);
+
+        foreach (Collider badguy in enemiesInRange)
+        {
+            badguy.transform.position = new Vector3(badguy.transform.position.x, badguy.transform.position.y, badguy.transform.position.z);
+        }
+
+    }
+
+    public float lightDamage;
+    public GameObject lightningParticle;
+
+    void Lightning()
+    {
+        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, playerPowerRange, humanMask);
+
+        foreach (Collider badguy in enemiesInRange)
+        {
+            GameObject damageParticle = Instantiate(lightningParticle, new Vector3(badguy.transform.position.x, 
+                badguy.transform.position.y + 4, badguy.transform.position.z), Quaternion.identity);
+            badguy.GetComponent<Human>().TakeDamage(lightDamage);
+        }
+
+    }
+
+}
