@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class Power : MonoBehaviour {
+public class PowerTester : MonoBehaviour
+{
 
     public float playerPowerRange;
 
@@ -15,22 +16,30 @@ public class Power : MonoBehaviour {
 
     public Text powerName;
 
-    void MakeBig()
+    void RandomSelect()
     {
-        //lerpTimer += Time.deltaTime;
         Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, playerPowerRange, skellerMask);
 
-        Collider randomGuy = enemiesInRange[Random.Range(0, enemiesInRange.Length)];
-
-        randomGuy.gameObject.transform.localScale += new Vector3(4, 4, 4);       
-
-        //randomGuy.gameObject.transform.localScale = Vector3.Lerp(randomGuy.gameObject.transform.localScale, new Vector3(4, 4, 4), lerpTimer);
-
+        randomGuy = enemiesInRange[0].transform.GetComponent<Character>();
     }
 
+    public Character randomGuy;
+    
+    void MakeBig()
+    {
+        randomGuy.gameObject.transform.localScale = Vector3.Lerp(randomGuy.gameObject.transform.localScale, new Vector3(4, 4, 4), lerpTimer); 
+    }
+
+    public bool pullBool = false;
+    public bool bigBool = false;
+    public bool pushBool = false;
+    public bool smallBool = false;
+    public bool moveBool = false;
+    public float lerpTimer;
     void Update()
     {
-        if ( abilityCycle == 7)
+
+        if (abilityCycle == 7)
         {
             abilityCycle = 1;
         }
@@ -41,34 +50,80 @@ public class Power : MonoBehaviour {
 
         }
 
-            if (Input.GetKeyDown(KeyCode.G) && abilityCycle == 1)
-        { MakeBig(); }
+        if (Input.GetKeyDown(KeyCode.G) && abilityCycle == 1)
+        {
+            lerpTimer = 0;
+            RandomSelect();
+            bigBool = true;
 
-        //if (Input.GetKeyUp(KeyCode.G))
-        //{ lerpTimer = 0; }
+        }
+
+        if (bigBool)
+        {
+            MakeBig();
+        }
+
+        if( lerpTimer >= 1)
+        {
+            bigBool = false;
+        }
 
         if (Input.GetKeyDown(KeyCode.G) && abilityCycle == 2)
+        {
+            lerpTimer = 0;
+            smallBool = true;
+        }
+
+        if(smallBool)
         { MakeSmall(); }
 
-        if (Input.GetKey(KeyCode.G) && abilityCycle == 3)
+        if (smallBool && lerpTimer >= 1)
+        { smallBool = false; }
+
+        lerpTimer += Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.G) && abilityCycle == 3)
+        {
+            lerpTimer = 0;
+            pullBool = true;
+        }
+
+        if (pullBool)
         { PullBaddies(); }
 
-        if (Input.GetKeyUp(KeyCode.G) && abilityCycle == 3)
-        { lerpTimer = 0; }
+        if (lerpTimer >= .5f && pullBool)
+        { pullBool = false; }
 
-        if (Input.GetKeyUp(KeyCode.G) && abilityCycle == 4)
-        { lerpTimer = 0; }
+        if (Input.GetKeyDown(KeyCode.G) && abilityCycle == 4)
+        {
+            lerpTimer = 0;
+            pushBool = true;
+        }
 
-        if (Input.GetKey(KeyCode.G) && abilityCycle == 4)
+        if(pushBool)
         { PushBack(); }
 
+        if(lerpTimer >= .5f && pushBool)
+        { pushBool = false; }
+
+
         if (Input.GetKeyDown(KeyCode.G) && abilityCycle == 5)
+        {
+            lerpTimer = 0;
+            moveBool = true;
+        }
+
+        if (moveBool)
         { LockMovement(); }
+
+        if (moveBool && lerpTimer > 5)
+        { moveBool = false; }
+
 
         if (Input.GetKeyDown(KeyCode.G) && abilityCycle == 6)
         { Lightning(); }
 
-        if ( abilityCycle == 1)
+        if (abilityCycle == 1)
         { powerName.text = "Make'em Big"; }
         if (abilityCycle == 2)
         { powerName.text = "Make'em Small"; }
@@ -80,7 +135,7 @@ public class Power : MonoBehaviour {
         { powerName.text = "Lock 'em"; }
         if (abilityCycle == 6)
         { powerName.text = "Lightening"; }
-               
+
     }
 
     void MakeSmall()
@@ -88,31 +143,29 @@ public class Power : MonoBehaviour {
         Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, playerPowerRange, humanMask);
 
         foreach (Collider badguy in enemiesInRange)
-        {           
-                badguy.transform.localScale -= new Vector3(.5f, .5f, .5f);         
+        {
+            badguy.transform.localScale = Vector3.Lerp(badguy.transform.localScale, new Vector3(.5f, .5f, .5f), lerpTimer);
         }
 
     }
-    public float lerpTimer;
+    
 
     void PullBaddies()
     {
-        lerpTimer += Time.deltaTime;
         Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, playerPowerRange, humanMask);
 
         foreach (Collider badguy in enemiesInRange)
         {
-            badguy.transform.position = Vector3.MoveTowards(badguy.transform.position, gameObject.transform.position, lerpTimer);      
+            badguy.transform.position = Vector3.MoveTowards(badguy.transform.position, gameObject.transform.position, lerpTimer);
         }
     }
 
     void PushBack()
     {
-        lerpTimer += Time.deltaTime;
         Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, playerPowerRange, humanMask);
 
         foreach (Collider badguy in enemiesInRange)
-        {           
+        {
             badguy.transform.position = new Vector3(badguy.transform.position.x, 0, badguy.transform.position.z);
             badguy.transform.position = Vector3.MoveTowards(badguy.transform.position, gameObject.transform.position, lerpTimer * -1);
         }
@@ -139,7 +192,7 @@ public class Power : MonoBehaviour {
 
         foreach (Collider badguy in enemiesInRange)
         {
-            GameObject damageParticle = Instantiate(lightningParticle, new Vector3(badguy.transform.position.x, 
+            GameObject damageParticle = Instantiate(lightningParticle, new Vector3(badguy.transform.position.x,
                 badguy.transform.position.y + 4, badguy.transform.position.z), Quaternion.identity);
             badguy.GetComponent<Human>().TakeDamage(lightDamage);
         }
