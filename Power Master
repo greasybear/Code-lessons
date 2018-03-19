@@ -1,0 +1,199 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+
+public class Power : MonoBehaviour {
+
+    public float playerPowerRange;
+
+    public int abilityCycle = 1;
+
+    public int skellerMask = 1 << 10;
+    public int humanMask = 1 << 12;
+
+    public Text powerName;
+
+    public Character randomGuy;
+
+    public virtual void RandomSelect(float powerRange, int maskLayer)
+    {
+        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, powerRange, maskLayer);
+        randomGuy = enemiesInRange[0].transform.GetComponent<Character>();
+
+    }
+
+    public virtual void MakeBig(float powerRange, int maskLayer, float lerpTimer)
+    {
+        randomGuy.gameObject.transform.localScale = Vector3.Lerp(randomGuy.gameObject.transform.localScale, new Vector3(4, 4, 4), lerpTimer);
+    }
+
+    public virtual void Update()
+    {
+
+        if ( abilityCycle == 8)
+        {
+            abilityCycle = 1;
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            abilityCycle += 1;
+        }
+
+        if ( abilityCycle == 1 && GetComponent<EnhanceSize>() == null)
+        {
+            powerName.text = "Make'em Big";
+            if (GetComponent<BoneExplode>() != null)
+            {
+                Destroy(gameObject.GetComponent<BoneExplode>());
+            }       
+            EnhanceSize powerScript = gameObject.AddComponent<EnhanceSize>();
+        }
+
+        if (abilityCycle == 2 && GetComponent<Shrink>() == null)
+        {
+            powerName.text = "Make'em Small";
+            if (GetComponent<EnhanceSize>() != null)
+            {
+                Destroy(gameObject.GetComponent<EnhanceSize>());
+            }
+            Shrink powerScript = gameObject.AddComponent<Shrink>();
+        }
+        if (abilityCycle == 3 && GetComponent<Pull>() == null)
+        {
+            powerName.text = "Pull 'em";
+            if (GetComponent<Shrink>() != null)
+            {
+                Destroy(gameObject.GetComponent<Shrink>());
+            }
+            Pull powerScript = gameObject.AddComponent<Pull>();
+        }
+        if (abilityCycle == 4 && GetComponent<Push>() == null)
+        {
+            powerName.text = "Push 'em";
+            if (GetComponent<Pull>() != null)
+            {
+                Destroy(gameObject.GetComponent<Pull>());
+            }
+            Push powerScript = gameObject.AddComponent<Push>();
+        }
+        if (abilityCycle == 5 && GetComponent<LockThem>() == null)
+        {
+            powerName.text = "Lock 'em";
+            if (GetComponent<Push>() != null)
+            {
+                Destroy(gameObject.GetComponent<Push>());
+            }
+            LockThem powerScript = gameObject.AddComponent<LockThem>();
+        }
+        if (abilityCycle == 6 && GetComponent<Lightning>() == null)
+        {
+            powerName.text = "Lightning";
+            if (GetComponent<LockThem>() != null)
+            {
+                Destroy(gameObject.GetComponent<LockThem>());
+            }
+            Lightning powerScript = gameObject.AddComponent<Lightning>();          
+        }
+
+        if (abilityCycle == 7 && GetComponent<BoneExplode>() == null)
+        {
+            powerName.text = "Bones";
+            if (GetComponent<Lightning>() != null)
+            {
+                Destroy(gameObject.GetComponent<Lightning>());
+            }
+            BoneExplode powerScript = gameObject.AddComponent<BoneExplode>();
+        }
+
+    }
+
+    public virtual void MakeSmall(float powerRange, int maskLayer, float lerpTimer)
+    {
+        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, powerRange, maskLayer);
+
+        foreach (Collider badguy in enemiesInRange)
+        {
+            badguy.transform.localScale = Vector3.Lerp(badguy.transform.localScale, new Vector3(.5f, .5f, .5f), lerpTimer);
+        }
+
+    }
+   
+    public virtual void PullBaddies(float powerRange, int maskLayer, float lerpTimer)
+    {
+        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, powerRange, maskLayer);
+
+        foreach (Collider badguy in enemiesInRange)
+        {
+            badguy.transform.position = Vector3.MoveTowards(badguy.transform.position, gameObject.transform.position, lerpTimer);      
+        }
+    }
+
+    public virtual void PushBack(float powerRange, int maskLayer, float lerpTimer)
+    {
+        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, powerRange, maskLayer);
+
+        foreach (Collider badguy in enemiesInRange)
+        {           
+            badguy.transform.position = new Vector3(badguy.transform.position.x, 0, badguy.transform.position.z);
+            badguy.transform.position = Vector3.MoveTowards(badguy.transform.position, gameObject.transform.position, lerpTimer * -1);
+        }
+
+    }
+    //needs work and testing for movement!!!
+    public virtual void LockMovement(float powerRange, int maskLayer)
+    {
+        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, powerRange, maskLayer);
+
+        foreach (Collider badguy in enemiesInRange)
+        {
+            badguy.transform.position = new Vector3(badguy.transform.position.x, badguy.transform.position.y, badguy.transform.position.z);
+        }
+
+    }
+
+    public GameObject lightningParticle;
+
+    public virtual void Lightning(float powerRange, int maskLayer, float lightDamage)
+    {
+        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, powerRange, maskLayer);
+
+        foreach (Collider badguy in enemiesInRange)
+        {
+            GameObject damageParticle = Instantiate(lightningParticle, new Vector3(badguy.transform.position.x, 
+                badguy.transform.position.y + 4, badguy.transform.position.z), Quaternion.identity);
+                badguy.GetComponent<Character>().TakeDamage(lightDamage);
+        }
+
+    }
+
+    public GameObject boneSplode;
+
+    public virtual void BoneExplode(float powerRange, int maskLayer, int boneDamage)
+    {
+        Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0f);
+        Vector3 worldPos;
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 1000f))
+        {
+            worldPos = hit.point;
+        }
+        else
+        {
+            worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+        }
+
+        GameObject damageParticle = Instantiate(boneSplode, worldPos, Quaternion.identity);
+
+        Collider[] enemiesInRange = Physics.OverlapSphere(worldPos, powerRange, maskLayer);
+
+        foreach (Collider badguy in enemiesInRange)
+        {
+            badguy.GetComponent<Character>().TakeDamage(boneDamage);
+        }
+    }
+
+}
