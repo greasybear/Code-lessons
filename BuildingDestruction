@@ -1,0 +1,84 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BuildingDestruction : MonoBehaviour {
+
+    public bool hut;
+    public GameObject smoke;
+    public GameObject fire;
+    public float buildingHealth = 100;
+    public int dmgSpawn;
+    public bool damage = false;
+    public int spawnRate = 5;
+
+    public void BulidingDamage(float damageAmount)
+    {
+        buildingHealth -= damageAmount;
+        dmgSpawn += 1;
+        damage = true;
+    }
+    Vector3 startPos;
+    Vector3 targetPos;
+    Vector3 targetY;
+    Vector3 startY;
+    float startTime;
+    public float remains;
+
+    void Awake()
+    {
+        startTime = Time.time;
+        startPos = gameObject.transform.localScale;
+        startY = gameObject.transform.position;
+        if (hut)
+        {
+            targetPos = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, (gameObject.transform.localScale.z - gameObject.transform.localScale.z + remains));
+        }        
+        else if (!hut)
+        {
+            targetPos = new Vector3(gameObject.transform.localScale.x, (gameObject.transform.localScale.y - gameObject.transform.localScale.y + remains), gameObject.transform.localScale.z);
+        }
+        targetY = new Vector3(gameObject.transform.position.x, .1f, gameObject.transform.position.z);
+    }
+
+    public List<Transform> spawnPoints;
+
+    void FireSpawn()
+    {
+        Transform fireToSpawn = spawnPoints[Random.Range(0, spawnPoints.Count)];
+        Instantiate(fire, fireToSpawn.position, Quaternion.identity, gameObject.transform);
+        dmgSpawn = 0;
+        spawnPoints.Remove(fireToSpawn);
+        damage = false;
+    }
+
+    public float shakeSpeed;
+    public float shakeAmount;
+
+    void Shake()
+    {
+        gameObject.transform.position = 
+            new Vector3(gameObject.transform.position.x +(Mathf.Sin(Time.time * shakeSpeed) * shakeAmount), 
+            gameObject.transform.position.y, gameObject.transform.position.z);
+    }
+
+    public float timer;
+    public float destructSpeed = .75f;
+    public bool destroyedB;
+    void Update()
+    {     
+        if (damage)// && spawnPoints.Count !=0 &&  dmgSpawn == spawnRate)
+        { 
+            FireSpawn();
+            dmgSpawn = 0;
+        }
+        if (destroyedB)//buildingHealth <= 0f)
+        {           
+            timer += ( Time.deltaTime * destructSpeed);
+            transform.localScale = Vector3.Lerp(startPos, targetPos, timer);
+            transform.position = Vector3.Lerp(startY, targetY, timer);
+            Shake();
+        }
+        
+    }
+}
