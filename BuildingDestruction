@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuildingDestruction : MonoBehaviour {
+public class BuildingDestruction : MonoBehaviour
+{
 
     public bool hut;
     public GameObject smoke;
@@ -33,12 +34,12 @@ public class BuildingDestruction : MonoBehaviour {
         if (hut)
         {
             targetPos = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, (gameObject.transform.localScale.z - gameObject.transform.localScale.z + remains));
-        }        
+        }
         else if (!hut)
         {
             targetPos = new Vector3(gameObject.transform.localScale.x, (gameObject.transform.localScale.y - gameObject.transform.localScale.y + remains), gameObject.transform.localScale.z);
         }
-        targetY = new Vector3(gameObject.transform.position.x, .1f, gameObject.transform.position.z);
+        targetY = new Vector3(gameObject.transform.position.x, 0f, gameObject.transform.position.z);
     }
 
     public List<Transform> spawnPoints;
@@ -57,8 +58,8 @@ public class BuildingDestruction : MonoBehaviour {
 
     void Shake()
     {
-        gameObject.transform.position = 
-            new Vector3(gameObject.transform.position.x +(Mathf.Sin(Time.time * shakeSpeed) * shakeAmount), 
+        gameObject.transform.position =
+            new Vector3(gameObject.transform.position.x + (Mathf.Sin(Time.time * shakeSpeed) * shakeAmount),
             gameObject.transform.position.y, gameObject.transform.position.z);
     }
 
@@ -66,19 +67,19 @@ public class BuildingDestruction : MonoBehaviour {
     public float destructSpeed = .75f;
     public bool destroyedB;
     void Update()
-    {     
+    {
         if (damage)// && spawnPoints.Count !=0 &&  dmgSpawn == spawnRate)
-        { 
+        {
             FireSpawn();
             dmgSpawn = 0;
         }
         if (destroyedB)//buildingHealth <= 0f)
-        {           
-            timer += ( Time.deltaTime * destructSpeed);
+        {
+            timer += (Time.deltaTime * destructSpeed);
             transform.localScale = Vector3.Lerp(startPos, targetPos, timer);
             transform.position = Vector3.Lerp(startY, targetY, timer);
             Shake();
         }
-        
+
     }
 }
