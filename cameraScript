@@ -1,0 +1,80 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CameraFollow : MonoBehaviour
+{
+    //public Transform target;            // The position that that camera will be following.
+    public float smoothing = 5f;        // The speed with which the camera will be following.
+    float _y;
+    Vector3 offset;                     // The initial offset from the target.
+    public GameObject player;
+    public GameObject secondCommand;
+    Vector3 camPosition;
+    public float zoomEffect = .5f;
+    public Vector3 center;
+    Transform cam;
+ 
+    void Start()
+    {
+        // Calculate the initial offset.
+        _y = transform.position.y;
+        offset = transform.position - player.transform.position;
+        cam = transform.GetChild(0);
+    }
+
+    public float zoomAmt = 0f;
+
+    void FollowCam( float xPosition, float yPosition, float skellCount)
+    {
+        camPosition = new Vector3(xPosition, yPosition + (skellCount * zoomEffect),
+                   player.transform.position.z - (skellCount * (zoomEffect / 2)));
+
+        camPosition = transform.position;
+
+        zoomAmt = Mathf.Log((skellCount * zoomEffect) + 1) + 50;
+    }
+
+    
+    void FixedUpdate()
+    {
+        float skellerCount = player.GetComponent<SkellerCommand>().skellerCount;
+        float maxZoom = zoomEffect * 150;
+
+        if (secondCommand != null)
+        {
+            center = (player.transform.position + secondCommand.transform.position) / 2;
+
+            if (skellerCount < maxZoom && secondCommand != null)
+            {
+                FollowCam(center.x, center.y, skellerCount);
+            }
+            if (skellerCount >= maxZoom && secondCommand != null)
+            {
+                FollowCam(center.x, center.y, maxZoom);
+            }
+        }
+
+        if (skellerCount < maxZoom && secondCommand == null)
+        {
+            FollowCam(player.transform.position.x, player.transform.position.y, skellerCount);
+        }
+
+        if (skellerCount >= maxZoom && secondCommand == null)
+
+        {
+            FollowCam(player.transform.position.x, player.transform.position.y, maxZoom);
+        }
+
+        // Create a postion the camera is aiming for based on the offset from the target.
+        transform.position = player.transform.position;
+
+        // Smoothly interpolate between the camera's current position and it's target position.
+        //transform.position = Vector3.Lerp(transform.position, targetCamPos, smoothing * Time.deltaTime);
+
+        cam.position = Vector3.Lerp(cam.position,
+            transform.position - (transform.GetChild(0).forward * zoomAmt), smoothing * Time.deltaTime);
+
+        //max position is y = 65 && z = -50
+    }
+}
