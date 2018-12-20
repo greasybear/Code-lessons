@@ -1,0 +1,40 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System.Linq;
+
+public class SmartObject : MonoBehaviour {
+
+    public bool isCharNear;
+    public int objectPriority;
+    public bool canItMove;
+    public bool once = true;
+    public GameObject player;
+
+    public virtual void OnTriggerEnter(Collider character)
+    {
+
+
+        if (character.tag == "Players" && once)
+        {
+            player = character.transform.gameObject;
+            isCharNear = true;
+            AddObject(character);
+            once = false;
+        }
+    }
+
+    public virtual void OnTriggerExit(Collider character)
+    {
+        if (character.tag == "Players")
+        {
+            isCharNear = false;
+            character.GetComponent<Character>().smartObjects.Remove(this.gameObject);
+            once = true;
+        }
+    }    
+    public virtual void AddObject(Collider player)
+    {
+        player.GetComponent<Character>().smartObjects.Add(this.gameObject);
+    }
+}
